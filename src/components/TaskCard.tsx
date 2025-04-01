@@ -22,6 +22,16 @@ const TaskCard = ({
       ? lowPriorityIcon
       : mediumPriorityIcon;
 
+  const updatePoints = (direction: "up" | "down") => {
+    const fibonacci = [0, 1, 2, 3, 5, 8, 13];
+    const index = fibonacci.indexOf(taskPoints);
+    const nextIndex = direction === "up" ? index + 1 : index - 1;
+    const newPoints = fibonacci[nextIndex]
+    if(newPoints){
+      updateTaskPoints(task, newPoints);
+    }
+  };
+
   return (
     <div className="text-xl rounded-lg px-2 m-2 bg-gray-50 w-60">
       <div className="text-base font-base py-2">{title}</div>
@@ -32,13 +42,9 @@ const TaskCard = ({
           {prioritySymbol}
         </div>
         <div className="flex gap-2 items-center">
-          <button onClick={() => updateTaskPoints(task, taskPoints - 1)}>
-            -
-          </button>
+          <button onClick={() => updatePoints('down')}>-</button>
           <div>{taskPoints}</div>
-          <button onClick={() => updateTaskPoints(task, taskPoints + 1)}>
-            +
-          </button>
+          <button onClick={() => updatePoints('up')}>+</button>
         </div>
       </div>
     </div>
