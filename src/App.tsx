@@ -13,17 +13,18 @@ function App() {
     };
   });
   const updateTaskPoints = (task: Task, points: number) => {
-    const updatedTasks = tasks.map((t) => {
-      return t.id === task.id ? { ...t, points } : t;
-    });
-    setTasks(updatedTasks);
+    updateTask({ ...task, points });
   };
   const updateTaskTitle = (task: Task, title: string) => {
+    updateTask({ ...task, title });
+  };
+  const updateTask = (task: Task) => {
     const updatedTasks = tasks.map((t) => {
-      return t.id === task.id ? { ...t, title } : t;
+      return t.id === task.id ? task : t;
     });
     setTasks(updatedTasks);
   };
+
   return (
     <div className="flex">
       {columns.map((column, i) => (
