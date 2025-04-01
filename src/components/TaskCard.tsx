@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Task } from "../utils/data-tasks";
 
 const lowPriorityIcon = (
@@ -57,18 +58,19 @@ const highPriorityIcon = (
 );
 
 const TaskCard = ({
-  task: { title, id, points, status, priority },
+  task: { title, id, points, priority },
 }: {
   task: Task;
 }) => {
+  let [taskPoints, setTaskPoints] = useState(points ?? 0);
+
   const prioritySymbol =
-    priority === "High" ? (
-      highPriorityIcon
-    ) : priority === "Low" ? (
-      lowPriorityIcon
-    ) : (
-      mediumPriorityIcon
-    );
+    priority === "High"
+      ? highPriorityIcon
+      : priority === "Low"
+      ? lowPriorityIcon
+      : mediumPriorityIcon;
+
   return (
     <div className="text-xl rounded-lg px-2 m-2 bg-gray-50 w-60">
       <div className="text-base font-base py-2">{title}</div>
@@ -78,7 +80,11 @@ const TaskCard = ({
           <div>{priority}</div>
           {prioritySymbol}
         </div>
-        <div>{points}</div>
+        <div className="flex gap-2 items-center">
+          <button onClick={() => setTaskPoints((taskPoints -= 1))}>-</button>
+          <div>{taskPoints}</div>
+          <button onClick={() => setTaskPoints((taskPoints += 1))}>+</button>
+        </div>
       </div>
     </div>
   );
