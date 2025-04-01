@@ -13,8 +13,11 @@ function App() {
   return (
     <div className="flex">
       {columns.map((column, i) => (
-        <div key={i}>
-          <h2 className="text-3xl p-2 capitalize font-bold text-gray-500">{column.status}</h2>
+        <div key={i} className="">
+          <h2 className="text-3xl p-2 capitalize font-bold text-gray-500">
+            {column.status}
+          </h2>
+          {column.tasks.reduce((total, task) => total + (task?.points ?? 0), 0)}
           {column.tasks.map((task) => (
             <TaskCard key={task.id} task={task} />
           ))}
