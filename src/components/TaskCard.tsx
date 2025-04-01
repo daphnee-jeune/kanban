@@ -8,12 +8,10 @@ import {
 
 const TaskCard = ({
   task,
-  updateTaskPoints,
-  updateTaskTitle,
+  updateTask,
 }: {
   task: Task;
-  updateTaskPoints: (task: Task, points: number) => void;
-  updateTaskTitle: (task: Task, title: string) => void;
+  updateTask: (task: Task) => void;
 }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
 
@@ -33,7 +31,7 @@ const TaskCard = ({
     const nextIndex = direction === "up" ? index + 1 : index - 1;
     const newPoints = fibonacci[nextIndex];
     if (newPoints) {
-      updateTaskPoints(task, newPoints);
+      updateTask({ ...task, points: newPoints });
     }
   };
 
@@ -47,7 +45,7 @@ const TaskCard = ({
             className="w-full"
             value={title}
             onBlur={() => setIsEditingTitle(false)}
-            onChange={(e) => updateTaskTitle(task, e.target.value)}
+            onChange={(e) => updateTask({ ...task, title: e.target.value })}
           />
         ) : (
           <div onClick={() => setIsEditingTitle(true)}>{title}</div>
