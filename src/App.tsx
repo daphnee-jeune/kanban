@@ -14,14 +14,7 @@ function App() {
   });
   const updateTaskPoints = (task: Task, points: number) => {
     const updatedTasks = tasks.map((t) => {
-      if (t.id === task.id) {
-        return {
-          ...t,
-          points,
-        };
-      } else {
-        return t;
-      }
+      return t.id === task.id ? { ...t, points } : t;
     });
     setTasks(updatedTasks);
   };
