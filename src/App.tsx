@@ -11,7 +11,7 @@ function App() {
     };
   });
   return (
-    <div className="flex divide-x">
+    <div className="flex">
       {columns.map((column) => (
         <div>
           <h2 className="text-3xl p-2 capitalize font-bold text-gray-500">{column.status}</h2>
