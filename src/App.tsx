@@ -10,6 +10,8 @@ import {
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [currentlyHoveringOver, setCurrentlyHoveringOver] =
+    useState<Status | null>(null);
   const columns = statuses.map((status) => {
     const tasksInColumn = tasks.filter((task) => task.status === status);
     return {
@@ -27,11 +29,16 @@ function App() {
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, status: Status) => {
     e.preventDefault();
+    setCurrentlyHoveringOver(null);
     const id = e.dataTransfer.getData("id");
     const task = tasks.find((task) => task.id === id);
     if (task) {
       updateTask({ ...task, status });
     }
+  };
+
+  const handleDragEnter = (status: Status) => {
+    setCurrentlyHoveringOver(status);
   };
   return (
     <div className="flex">
@@ -40,6 +47,7 @@ function App() {
           key={i}
           onDrop={(e) => handleDrop(e, column.status)}
           onDragOver={(e) => e.preventDefault()}
+          onDragEnter={() => handleDragEnter(column.status)}
         >
           <div className="flex justify-between text-3xl p-2 font-bold text-gray-500">
             <h2 className="capitaliz">{column.status}</h2>
@@ -50,9 +58,15 @@ function App() {
               )}
             </div>
           </div>
-          {column.tasks.map((task) => (
-            <TaskCard key={task.id} task={task} updateTask={updateTask} />
-          ))}
+          <div
+            className={`h-full ${
+              currentlyHoveringOver === column.status ? "bg-gray-200" : ""
+            }`}
+          >
+            {column.tasks.map((task) => (
+              <TaskCard key={task.id} task={task} updateTask={updateTask} />
+            ))}
+          </div>
         </div>
       ))}
     </div>
