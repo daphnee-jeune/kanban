@@ -14,7 +14,7 @@ function App() {
     <div className="flex divide-x">
       {columns.map((column) => (
         <div>
-          <h1>{column.status}</h1>
+          <h2 className="text-3xl p-2 capitalize font-bold text-gray-500">{column.status}</h2>
           {column.tasks.map((task) => (
             <TaskCard key={task.id} task={task} />
           ))}
