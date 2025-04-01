@@ -1,7 +1,7 @@
 type TaskCardProps = {
  title: string;
  id: number;
- points: string;
+ points?: string;
 }
 
 const TaskCard = ({ title, id, points }: TaskCardProps) => {
