@@ -18,6 +18,12 @@ function App() {
     });
     setTasks(updatedTasks);
   };
+  const updateTaskTitle = (task: Task, title: string) => {
+    const updatedTasks = tasks.map((t) => {
+      return t.id === task.id ? { ...t, title } : t;
+    });
+    setTasks(updatedTasks);
+  };
   return (
     <div className="flex">
       {columns.map((column, i) => (
@@ -36,6 +42,7 @@ function App() {
               key={task.id}
               task={task}
               updateTaskPoints={updateTaskPoints}
+              updateTaskTitle={updateTaskTitle}
             />
           ))}
         </div>
