@@ -1,15 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import TaskCard from "./components/TaskCard";
-import {
-  tasks as initialTasks,
-  statuses,
-  Task,
-  Status,
-} from "./utils/data-tasks";
+import { statuses, Task, Status } from "./utils/data-tasks";
 
+const local_endpoint = "http://localhost:3000/tasks";
 function App() {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [currentlyHoveringOver, setCurrentlyHoveringOver] =
     useState<Status | null>(null);
   const columns = statuses.map((status) => {
@@ -20,7 +16,20 @@ function App() {
     };
   });
 
+  useEffect(() => {
+    fetch(local_endpoint)
+      .then((res) => res.json())
+      .then((data) => setTasks(data));
+  }, []);
+
   const updateTask = (task: Task) => {
+    fetch(`${local_endpoint}/${task.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task)
+    });
     const updatedTasks = tasks.map((t) => {
       return t.id === task.id ? task : t;
     });
