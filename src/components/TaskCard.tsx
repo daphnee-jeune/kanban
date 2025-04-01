@@ -1,10 +1,7 @@
-type TaskCardProps = {
- title: string;
- id: number;
- points?: string;
-}
+import { Task } from "../utils/data-tasks";
 
-const TaskCard = ({ title, id, points }: TaskCardProps) => {
+const TaskCard = ({ task: { title, id, points } }: {task: Task}) => {
+
   return (
     <div className="text-xl border rounded-lg px-2 m-2 bg-gray-50">
       <div className="text-base font-semibold py-2">{title}</div>
