@@ -1,7 +1,12 @@
 import { useState } from "react";
 import "./App.css";
 import TaskCard from "./components/TaskCard";
-import { tasks as initialTasks, statuses, Task } from "./utils/data-tasks";
+import {
+  tasks as initialTasks,
+  statuses,
+  Task,
+  Status,
+} from "./utils/data-tasks";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
@@ -20,10 +25,22 @@ function App() {
     setTasks(updatedTasks);
   };
 
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>, status: Status) => {
+    e.preventDefault();
+    const id = e.dataTransfer.getData("id");
+    const task = tasks.find((task) => task.id === id);
+    if (task) {
+      updateTask({ ...task, status });
+    }
+  };
   return (
     <div className="flex">
       {columns.map((column, i) => (
-        <div key={i} className="">
+        <div
+          key={i}
+          onDrop={(e) => handleDrop(e, column.status)}
+          onDragOver={(e) => e.preventDefault()}
+        >
           <div className="flex justify-between text-3xl p-2 font-bold text-gray-500">
             <h2 className="capitaliz">{column.status}</h2>
             <div>
@@ -34,11 +51,7 @@ function App() {
             </div>
           </div>
           {column.tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              updateTask={updateTask}
-            />
+            <TaskCard key={task.id} task={task} updateTask={updateTask} />
           ))}
         </div>
       ))}
