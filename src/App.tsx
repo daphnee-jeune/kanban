@@ -1,8 +1,10 @@
+import { useState } from "react";
 import "./App.css";
 import TaskCard from "./components/TaskCard";
-import { tasks, statuses } from "./utils/data-tasks";
+import { tasks as initialTasks, statuses, Task } from "./utils/data-tasks";
 
 function App() {
+  const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const columns = statuses.map((status) => {
     const tasksInColumn = tasks.filter((task) => task.status === status);
     return {
@@ -10,6 +12,19 @@ function App() {
       tasks: tasksInColumn,
     };
   });
+  const updateTaskPoints = (task: Task, points: number) => {
+    const updatedTasks = tasks.map((t) => {
+      if (t.id === task.id) {
+        return {
+          ...t,
+          points,
+        };
+      } else {
+        return t;
+      }
+    });
+    setTasks(updatedTasks);
+  };
   return (
     <div className="flex">
       {columns.map((column, i) => (
@@ -19,7 +34,11 @@ function App() {
           </h2>
           {column.tasks.reduce((total, task) => total + (task?.points ?? 0), 0)}
           {column.tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <TaskCard
+              key={task.id}
+              task={task}
+              updateTaskPoints={updateTaskPoints}
+            />
           ))}
         </div>
       ))}
